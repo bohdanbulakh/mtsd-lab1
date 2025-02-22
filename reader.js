@@ -17,4 +17,18 @@ async function readStringLine(text) {
     });
 }
 
-module.exports = readStringLine;
+async function readIntLine(text) {
+  let input = await readStringLine(text)
+  let num = parseFloat(input);
+
+  while (isNaN(num)) {
+    console.log(`Error. Expected a valid real number, got ${input} instead`)
+    input = await readStringLine(text);
+    num = parseFloat(input);
+  }
+
+  return num;
+}
+
+module.exports.readStringLine = readStringLine;
+module.exports.readNumberLine = readIntLine;
