@@ -3,7 +3,11 @@ const {getSquareEquationRoots} = require('./src/solver');
 const fs = require('node:fs');
 
 async function main() {
-  const params = await getEquationFromConsole()
+  const fileName = process.argv[2];
+  const params = fileName ?
+    readNumberFile(fileName) :
+    await getEquationFromConsole();
+
   solveEquation(params.a, params.b, params.c);
 }
 
@@ -14,7 +18,7 @@ async function getEquationFromConsole() {
     a: await readNumberLine('a: '),
     b: await readNumberLine('b: '),
     c: await readNumberLine('c: '),
-  }
+  };
 }
 
 function solveEquation(a, b, c) {
@@ -36,7 +40,7 @@ function solveEquation(a, b, c) {
 
 }
 
-function readNumberFile (filename) {
+function readNumberFile(filename) {
   let file = fs.readFileSync(filename).toString();
 
   const input = file.split(/\r?\n/)[0];
@@ -57,6 +61,6 @@ function readNumberFile (filename) {
   }
 
   const [a, b, c] = params;
-  return { a, b, c };
+  return {a, b, c};
 }
 
