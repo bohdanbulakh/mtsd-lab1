@@ -1,17 +1,16 @@
-const readline = require('node:readline');
+const readline = require('node:readline/promises');
 
 const reader = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-function readStringLine(text) {
-  return new Promise((resolve, reject) => {
-    reader.question(text, (answer) => {
-      reader.close()
-      resolve(answer);
-    })
-  })
+async function readStringLine(text) {
+  return reader.question(text).then(
+    (answer) => {
+      reader.close();
+      return answer;
+    });
 }
 
 module.exports = readStringLine;
