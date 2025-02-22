@@ -1,4 +1,4 @@
-function getSquareEquationRoots(a, b, c) {
+function getRoots(a, b, c) {
   const discriminant = b ** 2 - 4 * a * c;
   if (discriminant < 0) return null;
 
@@ -9,4 +9,4 @@ function getSquareEquationRoots(a, b, c) {
   };
 }
 
-module.exports.getSquareEquationRoots = getSquareEquationRoots;
+module.exports.getRoots = getRoots;

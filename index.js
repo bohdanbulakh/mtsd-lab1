@@ -1,28 +1,19 @@
-const {readNumberLine} = require('./src/reader');
-const {getSquareEquationRoots} = require('./src/solver');
-const fs = require('node:fs');
+const {fromConsole, fromFile} = require('./src/equationReader');
+const {getRoots} = require('./src/equations');
 
 async function main() {
   const fileName = process.argv[2];
   const params = fileName ?
-    readNumberFile(fileName) :
-    await getEquationFromConsole();
+    fromFile(fileName) :
+    await fromConsole();
 
   solveEquation(params.a, params.b, params.c);
 }
 
 main();
 
-async function getEquationFromConsole() {
-  return {
-    a: await readNumberLine('a: '),
-    b: await readNumberLine('b: '),
-    c: await readNumberLine('c: '),
-  };
-}
-
 function solveEquation(a, b, c) {
-  const result = getSquareEquationRoots(a, b, c);
+  const result = getRoots(a, b, c);
 
   const rootsCount = result === null ? 0 : result.x1 === result.x2 ? 1 : 2;
   console.log(
@@ -37,30 +28,5 @@ function solveEquation(a, b, c) {
       console.log(`x1 = ${result.x1}\nx2 = ${result.x2}`);
       break;
   }
-
-}
-
-function readNumberFile(filename) {
-  let file = fs.readFileSync(filename).toString();
-
-  const input = file.split(/\r?\n/)[0];
-  if (!input) {
-    throw new Error('Invalid file format');
-  }
-
-  const params = input
-    .split(/\s+/)
-    .slice(0, 3)
-    .map((param) => parseFloat(param));
-
-  if (
-    params.some((param) => isNaN(param)) ||
-    params.length !== 3
-  ) {
-    throw new Error('Invalid file format');
-  }
-
-  const [a, b, c] = params;
-  return {a, b, c};
 }
 
