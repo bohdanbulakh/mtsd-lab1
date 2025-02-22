@@ -1,23 +1,35 @@
+const {readNumberLine} = require('./src/reader');
 const {getSquareEquationRoots} = require('./src/solver');
 
-function main() {
-
+async function main() {
+  const params = await getEquationFromConsole()
+  solveEquation(params.a, params.b, params.c);
 }
 
 main();
+
+async function getEquationFromConsole() {
+  return {
+    a: await readNumberLine('a: '),
+    b: await readNumberLine('b: '),
+    c: await readNumberLine('c: '),
+  }
+}
 
 function solveEquation(a, b, c) {
   const result = getSquareEquationRoots(a, b, c);
 
   const rootsCount = result === null ? 0 : result.x1 === result.x2 ? 1 : 2;
-  console.log(`There are ${rootsCount} roots`)
-
+  console.log(
+    `Equation is: (${a}) x^2 + (${b}) x + (${c}) = 0\n` +
+    `There are ${rootsCount} roots`,
+  );
   switch (rootsCount) {
     case 1:
-      console.log(`x1 = ${result.x1}`)
+      console.log(`x1 = ${result.x1}`);
       break;
     case 2:
-      console.log(`x1 = ${result.x1}\nx2 = ${result.x2}`)
+      console.log(`x1 = ${result.x1}\nx2 = ${result.x2}`);
       break;
   }
 
