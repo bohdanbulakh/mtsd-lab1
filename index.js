@@ -1,5 +1,6 @@
 const {readNumberLine} = require('./src/reader');
 const {getSquareEquationRoots} = require('./src/solver');
+const fs = require('node:fs');
 
 async function main() {
   const params = await getEquationFromConsole()
@@ -33,5 +34,29 @@ function solveEquation(a, b, c) {
       break;
   }
 
+}
+
+function readNumberFile (filename) {
+  let file = fs.readFileSync(filename).toString();
+
+  const input = file.split(/\r?\n/)[0];
+  if (!input) {
+    throw new Error('Invalid file format');
+  }
+
+  const params = input
+    .split(/\s+/)
+    .slice(0, 3)
+    .map((param) => parseFloat(param));
+
+  if (
+    params.some((param) => isNaN(param)) ||
+    params.length !== 3
+  ) {
+    throw new Error('Invalid file format');
+  }
+
+  const [a, b, c] = params;
+  return { a, b, c };
 }
 
