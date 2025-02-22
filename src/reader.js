@@ -17,7 +17,7 @@ async function readStringLine(text) {
     });
 }
 
-async function readIntLine(text) {
+async function readNumberLine(text) {
   let input = await readStringLine(text)
   let num = parseFloat(input);
 
@@ -31,4 +31,4 @@ async function readIntLine(text) {
 }
 
 module.exports.readStringLine = readStringLine;
-module.exports.readNumberLine = readIntLine;
+module.exports.readNumberLine = readNumberLine;
