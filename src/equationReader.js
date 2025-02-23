@@ -22,13 +22,20 @@ async function readNumberLine(text) {
   let input = await readStringLine(text);
   let num = parseFloat(input);
 
-  while (isNaN(num)) {
-    console.log(`Error. Expected a valid real number, got ${input} instead`);
+  while (!isParamValid(num, text[0] !== 'a')) {
+    console.log(num === 0 ?
+      'Error. "a" cannot be 0' :
+      `Error. Expected a valid real number, got "${input}" instead`);
+
     input = await readStringLine(text);
     num = parseFloat(input);
   }
 
   return num;
+}
+
+function isParamValid(value, zeroAllowed) {
+  return !(!zeroAllowed && value === 0) && !isNaN(value);
 }
 
 async function fromConsole() {
@@ -53,10 +60,13 @@ function fromFile(filename) {
     .map((param) => parseFloat(param));
 
   if (
-    params.some((param) => isNaN(param)) ||
-    params.length !== 3
+    params.length !== 3 ||
+    !params.every((param, index) =>
+      isParamValid(param, index !== 0))
   ) {
-    throw new Error('Invalid file format');
+    throw new Error(params[0] === 0 ?
+      'Error. "a" cannot be 0' :
+      'Invalid file format');
   }
 
   const [a, b, c] = params;
